@@ -130,6 +130,16 @@ Node *minValueNode(Node *node)
     return current;
 }
 
+Node *maxValueNode(Node *node)
+{
+    Node *current = node;
+
+    while (current->right != NULL)
+        current = current->right;
+
+    return current;
+}
+
 Node *deleteNode(Node *root, int key)
 {
 
@@ -214,7 +224,53 @@ void preOrder(Node *root)
         preOrder(root->right);
     }
 }
-
+int sumvariable = 0;
+int sumofnodes(Node *root)
+{
+    if (root != NULL)
+    {
+        sumvariable = sumvariable + root->key;
+        //cout <<"added"<<sumvariable <<"kazhinju";
+        sumofnodes(root->left);
+        sumofnodes(root->right);
+    }
+    return sumvariable;
+}
+int sumwrap(Node *root)
+{
+    sumvariable = 0;
+    return sumofnodes(root);
+}
+int numbervariable = 0;
+int numberofnodes(Node *root)
+{
+    if (root != NULL)
+    {
+        numbervariable = numbervariable + 1;
+        //cout <<"added"<<sumvariable <<"kazhinju";
+        numberofnodes(root->left);
+        numberofnodes(root->right);
+    }
+    return numbervariable;
+}
+int numberofnodeswrap(Node *root)
+{
+    numbervariable = 0;
+    return numberofnodes(root);
+}
+Node *search(Node *root, int key)
+{
+    Node *current = root;
+    while (current != NULL)
+    {
+        if (current->key == key)
+        {
+            break;
+        }
+        current = current->key < key ? current->right : current->left;
+    }
+    return current;
+}
 int main()
 {
     Node *root = NULL;
@@ -276,9 +332,26 @@ int main()
             for (int iterator = 0; eachword[iterator].compare("\0") != 0; iterator++)
             {
                 lastLineInteger = stoi(eachword[iterator]);
-                Node thisisit = height(lastLineInteger);
-                
+                Node *thisisit = search(root, lastLineInteger);
+                if (thisisit != NULL)
+                {
+                    int heightofkey = height(thisisit);
+                    cout << heightofkey;
+                    //preOrder(thisisit);
+                    cout << " " << minValueNode(thisisit)->key;
+                    cout << " " << maxValueNode(thisisit)->key;
+                    int sum = sumwrap(thisisit);
+                    int numberofnodes = numberofnodeswrap(thisisit);
+                    double average = (sum * 1.0) / numberofnodes;
+                    float value = (int)(average * 10 + .5);
+                    cout << " " << (float)value / 10 << endl;
+                }
+                else
+                {
+                    cout << "-1" << endl;
+                }
             }
         }
-        return 0;
     }
+    return 0;
+}
