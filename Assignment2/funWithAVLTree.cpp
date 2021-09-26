@@ -1,6 +1,8 @@
 #include <bits/stdc++.h>
 #include <iostream>
 using namespace std;
+//JITHIN JOHN
+//AM.EN.U4AIE20135
 
 class Node
 {
@@ -19,8 +21,8 @@ int sumOfKeysCaller(Node *root);
 int totalNumberOfNodes(Node *root);
 int totalNumberOfNodesCaller(Node *root);
 int heightOfTheNode(Node *N);
-Node *rightRotate(Node *y);
-Node *leftRotate(Node *x);
+Node *performRightRotate(Node *y);
+Node *performLeftRotate(Node *x);
 Node *insertNewNode(Node *node, int key);
 Node *minimumValueNode(Node *node);
 Node *maximumValueNode(Node *node);
@@ -69,15 +71,15 @@ int main()
             for (int iterator = 0; eachLineSplitIntoWords[iterator].compare("\0") != 0; iterator++)
             {
                 lastLineInteger = stoi(eachLineSplitIntoWords[iterator]);
-                Node *thisisit = searchNodeForKey(root, lastLineInteger);
-                if (thisisit != NULL)
+                Node *foundObject = searchNodeForKey(root, lastLineInteger);
+                if (foundObject != NULL)
                 {
-                    int heightofkey = heightOfTheNode(thisisit);
+                    int heightofkey = heightOfTheNode(foundObject);
                     cout << heightofkey;
-                    cout << " " << minimumValueNode(thisisit)->key;
-                    cout << " " << maximumValueNode(thisisit)->key;
-                    int sum = sumOfKeysCaller(thisisit);
-                    int totalNumberOfNodes = totalNumberOfNodesCaller(thisisit);
+                    cout << " " << minimumValueNode(foundObject)->key;
+                    cout << " " << maximumValueNode(foundObject)->key;
+                    int sum = sumOfKeysCaller(foundObject);
+                    int totalNumberOfNodes = totalNumberOfNodesCaller(foundObject);
                     double average = (sum * 1.0) / totalNumberOfNodes;
                     float value = (int)(average * 10 + .5);
                     cout << " " << (float)value / 10 << endl;
@@ -110,7 +112,8 @@ int checkDifferenceBetweenNodeHeights(Node *N)
     {
         return 0;
     }
-    return heightOfTheNode(N->left) - heightOfTheNode(N->right);
+    int difference = heightOfTheNode(N->left) - heightOfTheNode(N->right);
+    return difference;
 }
 
 int sumOfKeys(Node *root)
@@ -159,7 +162,7 @@ int heightOfTheNode(Node *N)
     return heightOfTheNode;
 }
 
-Node *rightRotate(Node *y)
+Node *performRightRotate(Node *y)
 {
     Node *x = y->left;
     Node *T2 = x->right;
@@ -173,7 +176,7 @@ Node *rightRotate(Node *y)
     return x;
 }
 
-Node *leftRotate(Node *x)
+Node *performLeftRotate(Node *x)
 {
     Node *y = x->right;
     Node *T2 = y->left;
@@ -216,18 +219,14 @@ Node *insertNewNode(Node *node, int key)
     {
         if (key < node->left->key)
         {
-            {
-                return rightRotate(node);
-            }
+            return performRightRotate(node);
         }
     }
     if (balance < -1)
     {
         if (key > node->right->key)
         {
-            {
-                return leftRotate(node);
-            }
+            return performLeftRotate(node);
         }
     }
 
@@ -235,10 +234,8 @@ Node *insertNewNode(Node *node, int key)
     {
         if (key > node->left->key)
         {
-            {
-                node->left = leftRotate(node->left);
-                return rightRotate(node);
-            }
+            node->left = performLeftRotate(node->left);
+            return performRightRotate(node);
         }
     }
 
@@ -246,10 +243,8 @@ Node *insertNewNode(Node *node, int key)
     {
         if (key < node->right->key)
         {
-            {
-                node->right = rightRotate(node->right);
-                return leftRotate(node);
-            }
+            node->right = performRightRotate(node->right);
+            return performLeftRotate(node);
         }
     }
 
@@ -317,8 +312,7 @@ Node *deleteNode(Node *root, int key)
         {
             Node *temp = minimumValueNode(root->right);
             root->key = temp->key;
-            root->right = deleteNode(root->right,
-                                     temp->key);
+            root->right = deleteNode(root->right, temp->key);
         }
     }
 
@@ -334,9 +328,7 @@ Node *deleteNode(Node *root, int key)
     {
         if (checkDifferenceBetweenNodeHeights(root->left) >= 0)
         {
-        }
-        {
-            return rightRotate(root);
+            return performRightRotate(root);
         }
     }
 
@@ -344,10 +336,8 @@ Node *deleteNode(Node *root, int key)
     {
         if (checkDifferenceBetweenNodeHeights(root->left) < 0)
         {
-        }
-        {
-            root->left = leftRotate(root->left);
-            return rightRotate(root);
+            root->left = performLeftRotate(root->left);
+            return performRightRotate(root);
         }
     }
 
@@ -355,9 +345,7 @@ Node *deleteNode(Node *root, int key)
     {
         if (checkDifferenceBetweenNodeHeights(root->right) <= 0)
         {
-            {
-                return leftRotate(root);
-            }
+            return performLeftRotate(root);
         }
     }
 
@@ -365,10 +353,8 @@ Node *deleteNode(Node *root, int key)
     {
         if (checkDifferenceBetweenNodeHeights(root->right) > 0)
         {
-            {
-                root->right = rightRotate(root->right);
-                return leftRotate(root);
-            }
+            root->right = performRightRotate(root->right);
+            return performLeftRotate(root);
         }
     }
 
@@ -404,5 +390,5 @@ Node *newNode(int key)
     node->left = NULL;
     node->right = NULL;
     node->height = 1;
-    return (node);
+    return node;
 }
