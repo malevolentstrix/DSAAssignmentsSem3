@@ -1,3 +1,4 @@
+import java.time.Period;
 import java.util.*;
 
 class Values {
@@ -18,12 +19,16 @@ public class Solution {
         sum = computeLPSArray(pat, M, lps);
 
         int previous = 0, p4 = 0;
-        int place = -1;
+        int place = -1, koreflag = 0;
         int i = 0;
         while (i < N) {
             if (pat.charAt(j) == txt.charAt(i)) {
                 j++;
                 i++;
+                if (koreflag == 0) {
+                    place = 0;
+                    koreflag++;
+                }
 
             }
 
@@ -32,7 +37,6 @@ public class Solution {
                 j = lps[j - 1];
             }
             if (j > previous) {
-
                 previous = j;
                 place = i - j;
 
@@ -48,9 +52,10 @@ public class Solution {
         }
         if (place != -1) {
             for (int ikr = 0; ikr < M; ikr++) {
-                if (place+ikr < N) {
+                if (place + ikr < N) {
                     if (pat.charAt(ikr) == txt.charAt(place + ikr)) {
                         p4++;
+
                         flag++;
                     } else if (flag != 0) {
                         break;
