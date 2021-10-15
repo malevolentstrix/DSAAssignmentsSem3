@@ -14,10 +14,10 @@ public class Solution {
         int lps[] = new int[M];
         int j = 0;
 
-        int sum;
+        int sum, flag = 0;
         sum = computeLPSArray(pat, M, lps);
 
-        int previous = 0;
+        int previous = 0, p4 = 0;
         int place = -1;
         int i = 0;
         while (i < N) {
@@ -46,8 +46,21 @@ public class Solution {
                     i = i + 1;
             }
         }
+        if (place != -1) {
+            for (int ikr = 0; ikr < M; ikr++) {
+                if (place+ikr < N) {
+                    if (pat.charAt(ikr) == txt.charAt(place + ikr)) {
+                        p4++;
+                        flag++;
+                    } else if (flag != 0) {
+                        break;
+                    }
+                }
+            }
+        }
+
         Values.sumval[totalnumberint] = sum;
-        Values.longest[totalnumberint] = previous;
+        Values.longest[totalnumberint] = p4;
         Values.place[totalnumberint] = place;
         totalnumberint = totalnumberint + 1;
 
@@ -76,6 +89,7 @@ public class Solution {
                 }
             }
         }
+
         return sum;
     }
 
@@ -87,7 +101,9 @@ public class Solution {
         int totalnumberint = Integer.parseInt(totalnumber);
         for (int i = 0; i < totalnumberint; i++) {
             textthaa = in.nextLine();
+            textthaa = textthaa.toUpperCase();
             paternthaa = in.nextLine();
+            paternthaa = paternthaa.toUpperCase();
             new Solution().KMPSearch(paternthaa, textthaa, i);
         }
         for (int j = 0; j < totalnumberint; j++) {
