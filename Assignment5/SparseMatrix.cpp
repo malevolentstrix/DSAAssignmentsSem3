@@ -33,7 +33,6 @@ int main()
     int matA[rowA][colA];
     int matB[rowB][colB];
     int outProduct[colA][rowB][rowB];
-    int sumOutProduct[colA][rowB];
     for (int matrixinfo = 0; matrixinfo < 2; matrixinfo++)
     {
         getline(cin, JC);
@@ -181,45 +180,19 @@ int main()
         //sumofprod =0;
     }
 
-    for (i = 1; i < rowBT; i++)
+    for (int k = 1; k < colBT; k++)
     {
-        for (j = 1; j <= colBT; j++)
+        for (i = 1; i < rowBT; i++)
         {
-            for (int k = 0; k < colBT; k++)
+            for (j = 1; j <= colBT; j++)
             {
-                sumOutProduct[i][j] = outProduct[i][j][k] + sumOutProduct[i][j];
                 cout << outProduct[i][j][k];
+                //cout<<"kollam value"<<sumofprod<<endl;
             }
-            
+            cout << endl;
+            //outProduct[i][j] = sumofprod;
         }
         cout << endl;
-        //outProduct[i][j] = sumofprod;
     }
-    cout << endl;
-
-    for (i = 1; i < rowBT; i++)
-    {
-        for (j = 1; j <= colBT; j++)
-        {
-            cout << sumOutProduct[i][j];
-        }
-        cout << endl;
-        //outProduct[i][j] = sumofprod;
-    }
-    cout << endl;
-
-    // for (int k = 1; k < colBT; k++)
-    // {
-    //     for (i = 1; i < rowBT; i++)
-    //     {
-    //         for (j = 1; j <= colBT; j++)
-    //         {
-    //             cout << outProduct[i][j][k];
-    //         }
-    //         cout << endl;
-    //         //outProduct[i][j] = sumofprod;
-    //     }
-    //     cout << endl;
-    // }
     return 0;
 }
