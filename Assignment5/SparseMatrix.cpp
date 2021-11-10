@@ -8,10 +8,7 @@ using namespace std;
 
 int main()
 {
-    int nonzeroMatricesCounter=0;
-    int nonzeroElementsCounter=0;
-    int nonzeroElementsFinalsCounter=0;
-    int sumOfElementsFinalCounter=0;
+
     string wordSplitter;
     string sizeOfMatrices;
     string JC;
@@ -38,6 +35,11 @@ int main()
     int matB[rowB][colB];
     int outProduct[colA][rowB][rowB];
     int sumOutProduct[colA][rowB];
+    int nonzeroMatricesCounter = 0;
+    int nonzeroElementsCounter[rowB];
+    int nonzeroElementsFinalsCounter = 0;
+    int sumOfElementsFinalCounter = 0;
+
     for (int matrixinfo = 0; matrixinfo < 2; matrixinfo++)
     {
         getline(cin, JC);
@@ -170,6 +172,11 @@ int main()
 
     for (int k = 1; k < colBT; k++)
     {
+        nonzeroElementsCounter[k] = 0;
+    }
+
+    for (int k = 1; k < colBT; k++)
+    {
         for (i = 1; i < rowBT; i++)
         {
             for (j = 1; j <= colBT; j++)
@@ -178,6 +185,10 @@ int main()
                 outProduct[i][j][k] = sumofprod;
                 cout << "kollam value" << sumofprod << endl;
                 sumofprod = 0;
+                if (outProduct[i][j][k] != 0)
+                {
+                    nonzeroElementsCounter[k]++;
+                }
             }
             //outProduct[i][j] = sumofprod;
         }
@@ -241,10 +252,21 @@ int main()
     {
         for (j = 1; j <= colBT; j++)
         {
-            cout << sumOutProduct[i][j] << " ";
+            sumOfElementsFinalCounter = sumOutProduct[i][j] + sumOfElementsFinalCounter;
+            if (sumOutProduct[i][j] != 0)
+            {
+                nonzeroElementsFinalsCounter++;
+            }
         }
         cout << endl;
         //outProduct[i][j] = sumofprod;
     }
+
+    cout << nonzeroMatricesCounter << " ";
+    for (i = 1; i < colBT; i++)
+    {
+        cout<<nonzeroElementsCounter[i] <<" ";
+    }
+    cout << nonzeroElementsFinalsCounter << " " << sumOfElementsFinalCounter;
     return 0;
 }
