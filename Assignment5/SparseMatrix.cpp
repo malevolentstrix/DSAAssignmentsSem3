@@ -8,6 +8,10 @@ using namespace std;
 
 int main()
 {
+    int nonzeroMatricesCounter=0;
+    int nonzeroElementsCounter=0;
+    int nonzeroElementsFinalsCounter=0;
+    int sumOfElementsFinalCounter=0;
     string wordSplitter;
     string sizeOfMatrices;
     string JC;
@@ -33,6 +37,7 @@ int main()
     int matA[rowA][colA];
     int matB[rowB][colB];
     int outProduct[colA][rowB][rowB];
+    int sumOutProduct[colA][rowB];
     for (int matrixinfo = 0; matrixinfo < 2; matrixinfo++)
     {
         getline(cin, JC);
@@ -171,28 +176,75 @@ int main()
             {
                 sumofprod = sumofprod + (matBT[i][k] * matAT[k][j]);
                 outProduct[i][j][k] = sumofprod;
-                //cout<<"kollam value"<<sumofprod<<endl;
+                cout << "kollam value" << sumofprod << endl;
                 sumofprod = 0;
             }
             //outProduct[i][j] = sumofprod;
         }
         cout << endl;
+        nonzeroMatricesCounter++;
         //sumofprod =0;
     }
 
+    // for (i = 1; i < rowBT; i++)
+    // {
+    //     for (j = 1; j <= colBT; j++)
+    //     {
+    //         for (int k = 0; k < colBT; k++)
+    //         {
+    //             sumOutProduct[i][j] = 0;
+    //             sumOutProduct[i][j] = outProduct[i][j][k] + sumOutProduct[i][j];
+    //             cout << outProduct[i][j][k]<<" ";
+
+    //         }
+    //         cout << endl;
+    //     }
+    //     cout << endl;
+    //     //outProduct[i][j] = sumofprod;
+    // }
+    // cout << endl;
+
+    // for (i = 1; i < rowBT; i++)
+    // {
+    //     for (j = 1; j <= colBT; j++)
+    //     {
+    //         //cout << sumOutProduct[i][j];
+    //     }
+    //     cout << endl;
+    //     //outProduct[i][j] = sumofprod;
+    // }
+    // cout << endl;
+    for (i = 1; i < rowBT; i++)
+    {
+        for (j = 1; j <= colBT; j++)
+        {
+            sumOutProduct[i][j] = 0;
+        }
+        cout << endl;
+    }
     for (int k = 1; k < colBT; k++)
     {
         for (i = 1; i < rowBT; i++)
         {
             for (j = 1; j <= colBT; j++)
             {
-                cout << outProduct[i][j][k];
-                //cout<<"kollam value"<<sumofprod<<endl;
+                sumOutProduct[i][j] = outProduct[i][j][k] + sumOutProduct[i][j];
+                //cout << sumOutProduct[i][j] << " ";
             }
             cout << endl;
             //outProduct[i][j] = sumofprod;
         }
         cout << endl;
+    }
+
+    for (i = 1; i < rowBT; i++)
+    {
+        for (j = 1; j <= colBT; j++)
+        {
+            cout << sumOutProduct[i][j] << " ";
+        }
+        cout << endl;
+        //outProduct[i][j] = sumofprod;
     }
     return 0;
 }
