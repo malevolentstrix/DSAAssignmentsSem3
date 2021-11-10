@@ -26,7 +26,6 @@ int main()
     {
         sssizeOfMatricesIntoWords[j] = wordSplitter;
     }
-    int tempcounter = 0;
     int rowA = stoi(sssizeOfMatricesIntoWords[0]) + 1;
     int rowB = stoi(sssizeOfMatricesIntoWords[1]) + 1;
     int colA = stoi(sssizeOfMatricesIntoWords[1]) + 1;
@@ -37,6 +36,7 @@ int main()
     int outProduct[colA][rowB][rowB];
     int sumOutProduct[colA][rowB];
     int nonzeroMatricesCounter = 0;
+    int tempcounter = 0;
     int nonzeroElementsCounter[rowB];
     int nonzeroElementsFinalsCounter = 0;
     int sumOfElementsFinalCounter = 0;
@@ -99,13 +99,14 @@ int main()
             for (int i = 0; ssCPIntoWords[i + 1].compare("\0") != 0; i++)
             {
                 numberOfElementsInRow = stoi(ssCPIntoWords[i + 1]) - stoi(ssCPIntoWords[i]);
-                int j = 0;
+int j = 0;
                 for (j = 0; j < numberOfElementsInRow; j++)
                 {
                     //cout <<"kollajm"<< ssIRIntoWords[starting + j];
                     matA[stoi(ssIRIntoWords[starting + j])][(stoi(ssJCIntoWords[i]))] = stoi(ssNUMIntoWords[starting + j]);
-                }
-                starting = starting + j;
+
+                    
+                }starting = starting+j;
             }
         }
         else
@@ -114,12 +115,13 @@ int main()
             for (int i = 0; ssCPIntoWords[i + 1].compare("\0") != 0; i++)
             {
                 numberOfElementsInRow = stoi(ssCPIntoWords[i + 1]) - stoi(ssCPIntoWords[i]);
-                int j = 0;
-                for (j = 0; j < numberOfElementsInRow; j++)
+int j = 0;
+                for (j=0; j < numberOfElementsInRow; j++)
                 {
                     matB[stoi(ssIRIntoWords[starting + j])][(stoi(ssJCIntoWords[i]))] = stoi(ssNUMIntoWords[starting + j]);
-                }
-                starting = starting + j;
+
+                    
+                }starting = starting+j;
             }
         }
     }
@@ -143,26 +145,8 @@ int main()
             matAT[i][j] = matA[j][i];
         }
     }
-    cout << endl;
-    cout << endl;
-    for (int i = 1; i < colA; i++)
-    {
-        for (int j = 1; j < rowA; j++)
-        {
-            cout << matAT[i][j] << " ";
-        }
-        cout << endl;
-    }
-    cout << endl;
-    for (int i = 1; i < colB; i++)
-    {
-        for (int j = 1; j < rowB; j++)
-        {
-            // cout<<"ele"<<i<<" "<< j;
-            cout << matBT[i][j] << " ";
-        }
-        cout << endl;
-    }
+
+
     int colAT = rowA;
     int colBT = rowB;
     int rowAT = colA;
@@ -174,56 +158,24 @@ int main()
         nonzeroElementsCounter[k] = 0;
     }
 
-    for (int k = 1; k < rowBT; k++)
+    for (int k = 1; k < colBT; k++)
     {
         for (i = 1; i < rowBT; i++)
         {
-            for (j = 1; j < colAT; j++)
+            for (j = 1; j <= colBT; j++)
             {
                 sumofprod = sumofprod + (matBT[i][k] * matAT[k][j]);
                 outProduct[i][j][k] = sumofprod;
-                cout << "kollam value" << i << " " << k << " sahs " << k << " " << j << " " << sumofprod << endl;
+
                 sumofprod = 0;
                 if (outProduct[i][j][k] != 0)
                 {
                     nonzeroElementsCounter[k]++;
                 }
             }
-            //outProduct[i][j] = sumofprod;
         }
-        cout << endl;
-        nonzeroMatricesCounter++;
-        //sumofprod =0;
+       // cout << endl;
     }
-
-    // for (i = 1; i < rowBT; i++)
-    // {
-    //     for (j = 1; j <= colBT; j++)
-    //     {
-    //         for (int k = 0; k < colBT; k++)
-    //         {
-    //             sumOutProduct[i][j] = 0;
-    //             sumOutProduct[i][j] = outProduct[i][j][k] + sumOutProduct[i][j];
-    //             cout << outProduct[i][j][k]<<" ";
-
-    //         }
-    //         cout << endl;
-    //     }
-    //     cout << endl;
-    //     //outProduct[i][j] = sumofprod;
-    // }
-    // cout << endl;
-
-    // for (i = 1; i < rowBT; i++)
-    // {
-    //     for (j = 1; j <= colBT; j++)
-    //     {
-    //         //cout << sumOutProduct[i][j];
-    //     }
-    //     cout << endl;
-    //     //outProduct[i][j] = sumofprod;
-    // }
-    // cout << endl;
     for (int k = 1; k < colBT; k++)
     {
         if (nonzeroElementsCounter[k] != 0)
@@ -231,13 +183,14 @@ int main()
             tempcounter++;
         }
     }
+
     for (i = 1; i < rowBT; i++)
     {
         for (j = 1; j <= colBT; j++)
         {
             sumOutProduct[i][j] = 0;
         }
-        cout << endl;
+       // cout << endl;
     }
     for (int k = 1; k < colBT; k++)
     {
@@ -246,24 +199,24 @@ int main()
             for (j = 1; j <= colBT; j++)
             {
                 sumOutProduct[i][j] = outProduct[i][j][k] + sumOutProduct[i][j];
-                //cout << sumOutProduct[i][j] << " ";
             }
-            cout << endl;
-            //outProduct[i][j] = sumofprod;
+         //   cout << endl;
         }
-        cout << endl;
+       // cout << endl;
     }
+
     for (i = 1; i < rowBT; i++)
     {
-        for (j = 1; j < colBT; j++)
+        for (j = 1; j <= colBT; j++)
         {
-            cout << sumOutProduct[i][j] << " ";
+            //cout << sumOutProduct[i][j] << " ";
         }
-        cout << endl;
+        //cout << endl;
     }
+
     for (i = 1; i < rowBT; i++)
     {
-        for (j = 1; j < colAT; j++)
+        for (j = 1; j <= colBT; j++)
         {
             sumOfElementsFinalCounter = sumOutProduct[i][j] + sumOfElementsFinalCounter;
             if (sumOutProduct[i][j] != 0)
@@ -271,8 +224,7 @@ int main()
                 nonzeroElementsFinalsCounter++;
             }
         }
-        cout << endl;
-        //outProduct[i][j] = sumofprod;
+        //cout << endl;
     }
 
     cout << tempcounter << " ";
