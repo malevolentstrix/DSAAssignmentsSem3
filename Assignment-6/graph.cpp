@@ -9,20 +9,23 @@ using namespace std;
 
 int main()
 {
+    int vertexPairOne;
+    int vertexPairTwo;
     string numberOfVertices;
     string eachLine;
     string wordSplitter;
+    string optionArguments;
     int degree = 0;
-    int adjacencyMatrix[100][100];
-    for (int i = 1; i < 100; i++)
+
+    getline(cin, numberOfVertices);
+    int adjacencyMatrix[stoi(numberOfVertices) + 1][stoi(numberOfVertices) + 1];
+    for (int i = 1; i <= stoi(numberOfVertices); i++)
     {
-        for (int j = 1; j < 100; j++)
+        for (int j = 1; j <= stoi(numberOfVertices); j++)
         {
             adjacencyMatrix[i][j] = 0;
         }
     }
-
-    getline(cin, numberOfVertices);
     for (int i = 0; i < stoi(numberOfVertices); i++)
     {
 
@@ -47,10 +50,10 @@ int main()
 
     string choiceProceed;
     getline(cin, choiceProceed);
-    switch (stoi(choiceProceed))
+    //std::cout << "choice" << stoi(choiceProceed) << endl;
+    if (stoi(choiceProceed) == 1)
     {
-    case 1:
-        string optionArguments;
+
         getline(cin, optionArguments);
         stringstream ssArguments(optionArguments);
         string argumentsIntoWords[1000];
@@ -62,26 +65,104 @@ int main()
         for (int j = 1; argumentsIntoWords[j] != "\0"; j++)
         {
             //cout<<argumentsIntoWords[j]<<endl;
-            for (int k = 1; k < 100; k++)
+            for (int k = 1; k <= stoi(numberOfVertices); k++)
             {
                 if (adjacencyMatrix[k][stoi(argumentsIntoWords[j])] != 0)
                 {
                     degree = degree + 1;
                 }
             }
-            cout << degree << " ";
+            std::cout << degree << " ";
             degree = 0;
         }
     }
 
-    cout << endl;
-    for (int i = 1; i < 10; i++)
+    else if (stoi(choiceProceed) == 2)
     {
-        for (int j = 1; j < 10; j++)
+        getline(cin, optionArguments);
+        stringstream ssArguments(optionArguments);
+        string argumentsIntoWords[1000];
+
+        for (int j = 0; ssArguments >> wordSplitter; j++)
         {
-            cout << adjacencyMatrix[i][j] << " ";
+            argumentsIntoWords[j] = wordSplitter;
         }
-        cout << endl;
+        for (int j = 1; argumentsIntoWords[j] != "\0"; j = j + 2)
+        {
+            vertexPairOne = stoi(argumentsIntoWords[j]);
+            vertexPairTwo = stoi(argumentsIntoWords[j + 1]);
+            std::cout << adjacencyMatrix[vertexPairOne][vertexPairTwo] << " ";
+        }
     }
+
+    else if (stoi(choiceProceed) == 3)
+    {
+        int nonZeroLowerTriangle = 0;
+        int i, j;
+        for (i = 1; i <= stoi(numberOfVertices); i++)
+        {
+            for (j = 1; j <= stoi(numberOfVertices); j++)
+            {
+                if (i >= j)
+                {
+                    if (adjacencyMatrix[i][j] != 0)
+                    {
+                        nonZeroLowerTriangle++;
+                    }
+                }
+            }
+        }
+        cout << nonZeroLowerTriangle;
+    }
+
+    else if (stoi(choiceProceed) == 4)
+    {
+        int cumulativeEdges = 0;
+        int i, j;
+        for (i = 1; i <= stoi(numberOfVertices); i++)
+        {
+            for (j = 1; j <= stoi(numberOfVertices); j++)
+            {
+                if (i >= j)
+                {
+                    if (adjacencyMatrix[i][j] != 0)
+                    {
+                        //cout << adjacencyMatrix[i][j]<<endl;
+                        cumulativeEdges = cumulativeEdges + adjacencyMatrix[i][j];
+                    }
+                }
+            }
+        }
+        cout << cumulativeEdges;
+    }
+
+    else if (stoi(choiceProceed) == 5)
+    {
+        int i, j;
+
+        for (i = 1; i <= stoi(numberOfVertices); i++)
+        {
+            for (j = 1; j <= stoi(numberOfVertices); j++)
+            {
+                if (i <= j)
+                {
+                    if (adjacencyMatrix[i][j] != 0)
+                    {
+                        cout << i << " " << j << " " << adjacencyMatrix[i][j]<<endl;
+                    }
+                    //cout << endl;
+                }
+            }
+        }
+    }
+    // std::cout << endl;
+    // for (int i = 1; i <= stoi(numberOfVertices); i++)
+    // {
+    //     for (int j = 1; j <= stoi(numberOfVertices); j++)
+    //     {
+    //         std::cout << adjacencyMatrix[i][j] << " ";
+    //     }
+    //     std::cout << endl;
+    // }
     return 0;
 }

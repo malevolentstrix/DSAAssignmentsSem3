@@ -143,26 +143,9 @@ int main()
             matAT[i][j] = matA[j][i];
         }
     }
-    cout << endl;
-    cout << endl;
-    for (int i = 1; i < colA; i++)
-    {
-        for (int j = 1; j < rowA; j++)
-        {
-            cout << matAT[i][j] << " ";
-        }
-        cout << endl;
-    }
-    cout << endl;
-    for (int i = 1; i < colB; i++)
-    {
-        for (int j = 1; j < rowB; j++)
-        {
-            // cout<<"ele"<<i<<" "<< j;
-            cout << matBT[i][j] << " ";
-        }
-        cout << endl;
-    }
+    //cout << endl;
+   // cout << endl;
+
     int colAT = rowA;
     int colBT = rowB;
     int rowAT = colA;
@@ -182,7 +165,6 @@ int main()
             {
                 sumofprod = sumofprod + (matBT[i][k] * matAT[k][j]);
                 outProduct[i][j][k] = sumofprod;
-                cout << "kollam value" << i << " " << k << " sahs " << k << " " << j << " " << sumofprod << endl;
                 sumofprod = 0;
                 if (outProduct[i][j][k] != 0)
                 {
@@ -191,7 +173,7 @@ int main()
             }
             //outProduct[i][j] = sumofprod;
         }
-        cout << endl;
+        //cout << endl;
         nonzeroMatricesCounter++;
         //sumofprod =0;
     }
@@ -237,7 +219,7 @@ int main()
         {
             sumOutProduct[i][j] = 0;
         }
-        cout << endl;
+        //cout << endl;
     }
     for (int k = 1; k < colBT; k++)
     {
@@ -248,18 +230,18 @@ int main()
                 sumOutProduct[i][j] = outProduct[i][j][k] + sumOutProduct[i][j];
                 //cout << sumOutProduct[i][j] << " ";
             }
-            cout << endl;
+            //cout << endl;
             //outProduct[i][j] = sumofprod;
         }
-        cout << endl;
+        //cout << endl;
     }
     for (i = 1; i < rowBT; i++)
     {
         for (j = 1; j < colBT; j++)
         {
-            cout << sumOutProduct[i][j] << " ";
+           // cout << sumOutProduct[i][j] << " ";
         }
-        cout << endl;
+        //cout << endl;
     }
     for (i = 1; i < rowBT; i++)
     {
@@ -271,7 +253,7 @@ int main()
                 nonzeroElementsFinalsCounter++;
             }
         }
-        cout << endl;
+       // cout << endl;
         //outProduct[i][j] = sumofprod;
     }
 
