@@ -7,64 +7,117 @@
 
 using namespace std;
 
+string numberOfVertices;
+int currentNodeBFSAlgo[100];
+void addEdge(int x, int y);
+void bfs(int start);
+int sumOfCurrentLevel = 0;
+
 vector<vector<int>> adj;
 
-// function to add edge to the graph
-void addEdge(int x, int y)
+struct Node
 {
-    adj[x][y] = 1;
-    adj[y][x] = 1;
+    int key;
+    Node *left;
+    Node *right;
+};
+
+struct Node *newNode(int value)
+{
+    Node *n = new Node;
+    n->key = value;
+    n->left = NULL;
+    n->right = NULL;
+    return n;
+}
+void printLeafNodes(Node *root);
+void printCurrentLevel(Node *root, int level);
+int height(Node *node);
+
+struct Node *insertValue(struct Node *root, int value,
+                         queue<Node *> &q)
+{
+    Node *node = newNode(value);
+    if (root == NULL)
+        root = node;
+
+    else if (q.front()->left == NULL)
+        q.front()->left = node;
+
+    else
+    {
+        q.front()->right = node;
+        q.pop();
+    }
+
+    q.push(node);
+    return root;
 }
 
-// Function to perform BFS on the graph
-void bfs(int start)
+Node *createTree(int arr[], int n)
 {
-    // Visited vector to so that
-    // a vertex is not visited more than once
-    // Initializing the vector to false as no
-    // vertex is visited at the beginning
-    vector<bool> visited(adj.size(), false);
-    vector<int> q;
-    q.push_back(start);
-
-    // Set source as visited
-    visited[start] = true;
-
-    int vis;
-    while (!q.empty())
+    Node *root = NULL;
+    queue<Node *> q;
+    for (int i = 0; i < n; i++)
+        root = insertValue(root, arr[i], q);
+    return root;
+}
+void printLevelOrder(Node *root)
+{
+    int h = height(root);
+    int i;
+    for (i = 1; i <= h; i++)
+        printCurrentLevel(root, i);
+}
+int height(Node *node)
+{
+    if (node == NULL)
+        return 0;
+    else
     {
-        vis = q[0];
 
-        // Print the current node
-        cout << vis << " ";
-        q.erase(q.begin());
+        int lheight = height(node->left);
+        int rheight = height(node->right);
 
-        // For every adjacent vertex to the current vertex
-        for (int i = 0; i < adj[vis].size(); i++)
+        if (lheight > rheight)
         {
-            if (adj[vis][i] == 1 && (!visited[i]))
-            {
-
-                // Push the adjacent node to the queue
-                q.push_back(i);
-
-                // Set
-                visited[i] = true;
-            }
+            return (lheight + 1);
+        }
+        else
+        {
+            return (rheight + 1);
         }
     }
 }
+void printCurrentLevel(Node *root, int level)
+{
 
+    if (root == NULL)
+    {
+        return;
+    }
+    if (level == 1)
+    {
+        ::sumOfCurrentLevel = ::sumOfCurrentLevel + 1;
+    }
+    else if (level > 1)
+    {
+        printCurrentLevel(root->left, level - 1);
+        printCurrentLevel(root->right, level - 1);
+    }
+}
+/////////////////////////////////////////////MAIN///////////////////////////////////////////
 int main()
 {
     int vertexPairOne;
     int vertexPairTwo;
-    string numberOfVertices;
+
     string eachLine;
     string wordSplitter;
     string optionArguments;
     int degree = 0;
     getline(cin, numberOfVertices);
+    ::currentNodeBFSAlgo[stoi(numberOfVertices)] = 32700;
     int v = stoi(numberOfVertices);
     adj = vector<vector<int>>(v, vector<int>(v, 0));
     int adjacencyMatrix[1000][1000];
@@ -87,12 +140,12 @@ int main()
             eachLineIntoWords[j] = wordSplitter;
         }
         int indexForCurrentLine = eachLineIntoWords[0][0];
-        // cout << "lsk" << eachLineIntoWords[5] << " " << eachLineIntoWords[4] << " " << eachLineIntoWords[3];
+
         for (int j = 2; eachLineIntoWords[j] != "\0"; j++)
         {
-            // cout<<"kolam"<<eachLineIntoWords[j];
+
             int assignValue = eachLineIntoWords[j][0];
-            // cout<<assignValue;
+
             adjacencyMatrix[indexForCurrentLine][assignValue] = stoi(eachLineIntoWords[j + 1]);
             adjacencyMatrix[assignValue][indexForCurrentLine] = stoi(eachLineIntoWords[j + 1]);
             j++;
@@ -108,17 +161,19 @@ int main()
 
             if (adjacencyMatrix[i][j] != 0)
             {
-                // cout << i - 64 << "     " << j - 64 << "     " << adjacencyMatrix[i][j] << endl;
+
                 addEdge(i - 65, j - 65);
             }
         }
     }
-    cout << endl;
+    std::cout << endl;
     bfs(0);
-    cout << endl;
-    cout <<endl;
-    // string choiceProceed;
-    // getline(cin, choiceProceed);
+    for (int i = 0; ::currentNodeBFSAlgo[i] != 32700; i++)
+    {
+        std::cout << currentNodeBFSAlgo[i];
+    }
+    std::cout << endl;
+    std::cout << endl;
 
     for (int i = 65; i <= 64 + stoi(numberOfVertices); i++)
     {
@@ -128,5 +183,83 @@ int main()
         }
         std::cout << endl;
     }
+
+    std::cout << endl;
+    Node *root = createTree(currentNodeBFSAlgo, stoi(numberOfVertices));
+
+    std::cout << endl;
+    // OPTION 1
+    //  std::cout << height(root) - 1 << " ";
+    //  for (int i = 2; i <= height(root); i++)
+    //  {
+    //      ::sumOfCurrentLevel = 0;
+
+    //     printCurrentLevel(root, i);
+    //     std::cout << ::sumOfCurrentLevel << " ";
+    // }
+
+    // OPTION 2
+    // printLeafNodes(root);
+
+    // OPTION 3
+    
     return 0;
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void printLeafNodes(Node *root)
+{
+
+    if (!root)
+        return;
+
+    if (!root->left && !root->right)
+    {
+        cout << root->key << " ";
+        return;
+    }
+
+    if (root->left)
+        printLeafNodes(root->left);
+
+    if (root->right)
+        printLeafNodes(root->right);
+}
+
+void addEdge(int x, int y)
+{
+    adj[x][y] = 1;
+    adj[y][x] = 1;
+}
+
+void bfs(int start)
+{
+
+    vector<bool> visited(adj.size(), false);
+    vector<int> q;
+    q.push_back(start);
+
+    visited[start] = true;
+
+    int vis;
+    int nodeIterator = 0;
+    while (!q.empty())
+    {
+        vis = q[0];
+
+        currentNodeBFSAlgo[nodeIterator] = vis;
+
+        q.erase(q.begin());
+
+        for (int i = 0; i < adj[vis].size(); i++)
+        {
+            if (adj[vis][i] == 1 && (!visited[i]))
+            {
+
+                q.push_back(i);
+
+                visited[i] = true;
+            }
+        }
+        nodeIterator++;
+    }
 }
