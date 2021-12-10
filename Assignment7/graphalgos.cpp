@@ -6,6 +6,8 @@
 #include <bits/stdc++.h>
 
 using namespace std;
+// JITHIN JOHN
+// AM.EN.U4AIE20135
 
 string numberOfVertices;
 int currentNodeBFSAlgo[100];
@@ -166,43 +168,45 @@ int main()
             }
         }
     }
-    std::cout << endl;
     bfs(0);
-    for (int i = 0; ::currentNodeBFSAlgo[i] != 32700; i++)
-    {
-        std::cout << currentNodeBFSAlgo[i];
-    }
-    std::cout << endl;
-    std::cout << endl;
-
-    for (int i = 65; i <= 64 + stoi(numberOfVertices); i++)
-    {
-        for (int j = 65; j <= 64 + stoi(numberOfVertices); j++)
-        {
-            std::cout << adjacencyMatrix[i][j] << " ";
-        }
-        std::cout << endl;
-    }
-
-    std::cout << endl;
-    Node *root = createTree(currentNodeBFSAlgo, stoi(numberOfVertices));
-
-    std::cout << endl;
-    // OPTION 1
-    //  std::cout << height(root) - 1 << " ";
-    //  for (int i = 2; i <= height(root); i++)
-    //  {
-    //      ::sumOfCurrentLevel = 0;
-
-    //     printCurrentLevel(root, i);
-    //     std::cout << ::sumOfCurrentLevel << " ";
+    // for (int i = 0; ::currentNodeBFSAlgo[i] != 32700; i++)
+    // {
+    //     std::cout << currentNodeBFSAlgo[i];
     // }
 
-    // OPTION 2
-    // printLeafNodes(root);
+    // std::cout << endl;
 
+    // for (int i = 65; i <= 64 + stoi(numberOfVertices); i++)
+    // {
+    //     for (int j = 65; j <= 64 + stoi(numberOfVertices); j++)
+    //     {
+    //         std::cout << adjacencyMatrix[i][j] << " ";
+    //     }
+    //     std::cout << endl;
+    // }
+
+    Node *root = createTree(currentNodeBFSAlgo, stoi(numberOfVertices));
+
+    string choiceProceed;
+    getline(cin, choiceProceed);
+    if (stoi(choiceProceed) == 1)
+    {
+        std::cout << height(root) - 1 << " ";
+        for (int i = 2; i <= height(root); i++)
+        {
+            ::sumOfCurrentLevel = 0;
+
+            printCurrentLevel(root, i);
+            std::cout << ::sumOfCurrentLevel << " ";
+        }
+    }
+    if (stoi(choiceProceed) == 2)
+    {
+        // OPTION 2
+        printLeafNodes(root);
+    }
     // OPTION 3
-    
+
     return 0;
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -214,7 +218,9 @@ void printLeafNodes(Node *root)
 
     if (!root->left && !root->right)
     {
-        cout << root->key << " ";
+        int asciivalofalpha = (root->key)+65;
+        char alphatypecast = asciivalofalpha;
+        cout << alphatypecast << " ";
         return;
     }
 
