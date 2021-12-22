@@ -1,5 +1,3 @@
-//.h file code:
-
 #include <string>
 #include <vector>
 #include <iostream>
@@ -159,8 +157,7 @@ int main()
     }
     std::string eachline;
     getline(std::cin, eachline);
-    // std::vector<std::string> line = eachline.split(L" ");
-    // getline(cin, eachLine);
+
     std::stringstream sseachLine(eachline);
     std::string eachLineIntoWords[1000];
 
