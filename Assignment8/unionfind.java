@@ -1,55 +1,58 @@
 import java.util.Scanner;
 
 public class unionfind {
-    private int[] veetukar;
-    private int[] makkal;
+    private int[] parent;
+    private int[] childern;
+    private int[] rank;
 
-    public unionfind(int valuppam) {
-        veetukar = new int[valuppam];
-        makkal = new int[valuppam];
-        for (int i = 0; i < valuppam; i++) {
-            veetukar[i] = i;
-            makkal[i] = 1;
+    public unionfind(int size) {
+        parent = new int[size];
+        childern = new int[size];
+        rank = new int[size];
+        for (int i = 0; i < size; i++) {
+            parent[i] = i;
+            childern[i] = 1;
+            rank[i] = 0;
         }
     }
 
-    public int noof(int kopp) {
-        return makkal[kandupidikk(kopp)];
+    public int numberofnodes(int nodesinthiselement) {
+        return childern[find(nodesinthiselement)];
     }
 
-    public int rootkandupveetukarikan(int kopp) {
-        return kandupidikk(kopp);
+    public int findtheroot(int nodesinthiselement) {
+        return find(nodesinthiselement);
     }
 
-    public int ethrayennam(int[] sanangal) {
-        int verpettathethra = 0;
-        for (int i = 0; i < sanangal.length; i++) {
-            if (kandupidikk(sanangal[i]) == sanangal[i]) {
-                verpettathethra = verpettathethra + 1;
+    public int numberoftrees(int[] elements) {
+        int countofthedisjointsets = 0;
+        for (int i = 0; i < elements.length; i++) {
+            if (find(elements[i]) == elements[i]) {
+                countofthedisjointsets = countofthedisjointsets + 1;
             }
         }
-        return verpettathethra;
+        return countofthedisjointsets;
     }
 
-    public int kandupidikk(int p) {
-        while (p != veetukar[p])
-            p = veetukar[p];
+    public int find(int p) {
+        while (p != parent[p])
+            p = parent[p];
         return p;
     }
 
-    public int azham(int p) {
-        int azhamenn = 0;
-        for (int i = 0; p != kandupidikk(p); i++) {
-            azhamenn = azhamenn + 1;
-            p = veetukar[p];
+    public int depth(int p) {
+        int depthcount = 0;
+        while (p != find(p)) {
+            depthcount = depthcount + 1;
+            p = parent[p];
         }
-        return azhamenn;
+        return depthcount;
     }
 
-    public int kudapirappukal(int p, int[] ithaan) {
+    public int siblings(int p, int[] elements) {
         int siblno = 0;
-        for (int i = 0; i < ithaan.length; i++) {
-            if (kandupidikk(p) == kandupidikk(ithaan[i]) && azham(p) == azham(ithaan[i])) {
+        for (int i = 0; i < elements.length; i++) {
+            if (find(p) == find(elements[i]) && depth(p) == depth(elements[i])) {
                 siblno = siblno + 1;
             }
         }
@@ -57,22 +60,32 @@ public class unionfind {
     }
 
     public void union(int p, int q) {
-        int i = kandupidikk(p);
-        int j = kandupidikk(q);
+        int i = find(p);
+        int j = find(q);
         if (i == j)
             return;
 
-        if (makkal[i] < makkal[j]) {
-            veetukar[i] = j;
-            makkal[j] += makkal[i];
+        else if (rank[i] < rank[j]) {
+            parent[i] = j;
+            childern[j] += childern[i];
+        } else if (rank[i] > rank[j]) {
+            parent[j] = i;
+            childern[i] += childern[j];
         } else {
-            veetukar[j] = i;
-            makkal[i] += makkal[j];
+            if (j > i) {
+                int tempvar = j;
+                j = i;
+                i = tempvar;
+            }
+            parent[j] = i;
+            childern[i] += childern[j];
+            rank[i]++;
         }
+
     }
 
     public static void main(String[] args) {
-        unionfind sadhanam = new unionfind(66);
+        unionfind object = new unionfind(200);
 
         Scanner in = new Scanner(System.in);
         String line1 = in.nextLine();
@@ -80,38 +93,38 @@ public class unionfind {
         String[] arrOfStr1 = line1.split(" ");
         String[] arrOfStr2 = line2.split(" ");
         int siz = Integer.parseInt(arrOfStr1[0]);
-        int[] sanangal = new int[siz];
+        int[] elements = new int[siz];
         for (int i = 1; i <= arrOfStr1.length - 1; i++) {
-            sanangal[i - 1] = Integer.parseInt(arrOfStr1[i]);
+            elements[i - 1] = Integer.parseInt(arrOfStr1[i]);
         }
         for (int i = 1; i <= arrOfStr2.length - 1; i = i + 2) {
-            sadhanam.union(Integer.parseInt(arrOfStr2[i]), Integer.parseInt(arrOfStr2[i + 1]));
+            object.union(Integer.parseInt(arrOfStr2[i]), Integer.parseInt(arrOfStr2[i + 1]));
         }
         String eachline;
         eachline = in.nextLine();
-        String[] thannasadhanam = eachline.split(" ");
-        if (thannasadhanam[0].equals("N")) {
-            System.out.println(sadhanam.ethrayennam(sanangal));
-        } else if (thannasadhanam[0].equals("Z")) {
-            for (int i = 2; i < thannasadhanam.length; i++) {
-                System.out.print(sadhanam.noof(Integer.parseInt(thannasadhanam[i])));
+        String[] line = eachline.split(" ");
+        if (line[0].equals("N")) {
+            System.out.println(object.numberoftrees(elements));
+        } else if (line[0].equals("Z")) {
+            for (int i = 2; i < line.length; i++) {
+                System.out.print(object.numberofnodes(Integer.parseInt(line[i])));
                 System.out.print(" ");
             }
-        } else if (thannasadhanam[0].equals("F")) {
-            for (int i = 2; i < thannasadhanam.length; i++) {
-                System.out.print(sadhanam.kandupidikk(Integer.parseInt(thannasadhanam[i])));
-                System.out.print(" ");
-
-            }
-        } else if (thannasadhanam[0].equals("D")) {
-            for (int i = 2; i < thannasadhanam.length; i++) {
-                System.out.print(sadhanam.azham(Integer.parseInt(thannasadhanam[i])));
+        } else if (line[0].equals("F")) {
+            for (int i = 2; i < line.length; i++) {
+                System.out.print(object.find(Integer.parseInt(line[i])));
                 System.out.print(" ");
 
             }
-        } else if (thannasadhanam[0].equals("S")) {
-            for (int i = 2; i < thannasadhanam.length; i++) {
-                System.out.print(sadhanam.kudapirappukal(Integer.parseInt(thannasadhanam[i]), sanangal));
+        } else if (line[0].equals("D")) {
+            for (int i = 2; i < line.length; i++) {
+                System.out.print(object.depth(Integer.parseInt(line[i])));
+                System.out.print(" ");
+
+            }
+        } else if (line[0].equals("S")) {
+            for (int i = 2; i < line.length; i++) {
+                System.out.print(object.siblings(Integer.parseInt(line[i]), elements));
                 System.out.print(" ");
 
             }
